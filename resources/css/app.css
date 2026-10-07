@@ -1,0 +1,50 @@
+@import 'tailwindcss';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/livewire/src/Features/SupportPagination/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@theme {
+ --font-sans: 'Segoe UI', ui-sans-serif, system-ui, sans-serif;
+ --color-wine: #783f50;
+ --color-ink: #342b31;
+ --color-muted: #786d75;
+ --color-canvas: #faf8f7;
+}
+@layer base {
+ body { @apply bg-canvas text-ink antialiased; }
+ button, a, input, select, textarea { @apply focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wine; }
+ button, [type=submit] { cursor: pointer; }
+ button:disabled { cursor: wait; opacity: .55; }
+ input:not([type=checkbox]):not([type=radio]),select,textarea { @apply w-full rounded-xl border border-stone-200 bg-white px-3.5 py-3 text-sm transition focus:border-wine focus:outline-none focus:ring-2 focus:ring-wine/10; }
+ input[type=checkbox] { @apply size-4 accent-wine; }
+ label { @apply text-sm font-medium; }
+ th { @apply px-5 py-3.5 text-left text-xs font-medium text-muted; }
+ td { @apply px-5 py-4 text-sm; }
+}
+@layer components {
+ .icon-action { @apply inline-flex size-11 shrink-0 items-center justify-center rounded-xl border border-stone-200 bg-white text-muted transition hover:border-wine/30 hover:bg-[#f5eaed] hover:text-wine; }
+ .panel { @apply rounded-2xl border border-stone-200/80 bg-white; }
+ .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-wine px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#603040]; }
+ .btn-secondary { @apply inline-flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-ink transition hover:bg-stone-50; }
+ .link { @apply font-medium text-wine underline-offset-4 hover:underline; }
+ .eyebrow { @apply text-[10px] font-semibold uppercase tracking-[.2em] text-muted; }
+ .field { @apply flex flex-col gap-2; }
+ .badge { @apply inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-800; }
+ .badge-muted { @apply inline-flex items-center rounded-full bg-stone-100 px-2.5 py-1 text-xs text-stone-600; }
+ .avatar { @apply flex size-10 shrink-0 items-center justify-center rounded-full bg-[#f4e8eb] text-sm font-semibold text-wine; }
+ .serif { font-family: Georgia, 'Times New Roman', serif; }
+}
+[x-cloak] { display: none !important; }
+@layer components {
+ .brand-logo {
+ display: block;
+ max-width: 100%;
+ height: auto;
+ aspect-ratio: 801 / 537;
+ background: transparent;
+ print-color-adjust: exact;
+ -webkit-print-color-adjust: exact;
+ }
+}
+@media print {
+ .brand-logo { filter: grayscale(1); }
+}

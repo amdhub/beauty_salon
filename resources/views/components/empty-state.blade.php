@@ -1,0 +1,2 @@
+@props(['title','description','icon'=>'flower'])
+<div class="flex flex-col items-center px-5 py-12 text-center"><span class="mb-4 flex size-14 items-center justify-center rounded-2xl bg-[#f8f1f3] text-wine"><x-icon :name="$icon" class="size-7"/></span><h3 class="serif text-xl">{{ $title }}</h3><p class="mt-2 max-w-sm text-sm leading-6 text-muted">{{ $description }}</p><div class="mt-5">{{ $slot }}</div></div>

@@ -1,0 +1,1 @@
+<x-layout title="Prestations & tarifs"><x-page-heading title="La carte du salon" description="Votre savoir-faire, décliné pour chaque envie.">@can('create',\App\Models\Service::class)<a class="btn" href="{{ route('services.create') }}"><x-icon name="plus"/>Nouvelle prestation</a>@endcan</x-page-heading><livewire:service-catalog/></x-layout>

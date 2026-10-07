@@ -1,0 +1,1 @@
+<x-layout title="Clients"><x-page-heading title="Vos clients" description="Des relations précieuses, des attentions personnalisées.">@can('create',\App\Models\Customer::class)<a class="btn" href="{{ route('customers.create') }}"><x-icon name="plus"/>Nouveau client</a>@endcan</x-page-heading><livewire:customer-directory/></x-layout>

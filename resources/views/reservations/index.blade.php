@@ -1,0 +1,14 @@
+<x-layout title="Réservations">
+    <x-page-heading title="Les rendez-vous du salon" description="Consultez les demandes en ligne et confirmez les horaires avec vos clients."><a href="{{ route('home') }}" class="btn-secondary">Voir le site public</a></x-page-heading>
+    <a href="{{ route('reservations.index', ['status' => 'pending']) }}" class="panel mb-6 flex items-center gap-4 p-5"><span class="avatar"><x-icon name="calendar"/></span><div><p class="text-2xl font-semibold">{{ $pendingCount }}</p><p class="text-sm text-muted">demande(s) en attente de validation</p></div></a>
+    <form method="GET" class="panel mb-6 grid items-end gap-4 p-4 sm:grid-cols-2 xl:grid-cols-4">
+        <x-field name="search" label="Client ou téléphone" :value="$filters['search'] ?? ''"/>
+        <div class="field"><label for="status">Statut</label><select id="status" name="status"><option value="">Tous les statuts</option>@foreach(\App\Models\Reservation::STATUSES as $value => $label)<option value="{{ $value }}" @selected(($filters['status'] ?? '') === $value)>{{ $label }}</option>@endforeach</select></div>
+        <x-field name="date" label="Date du rendez-vous" type="date" :value="$filters['date'] ?? ''"/>
+        <div class="flex gap-3"><button class="btn">Filtrer</button><a href="{{ route('reservations.index') }}" class="btn-secondary" aria-label="Réinitialiser les filtres"><x-icon name="close"/></a></div>
+    </form>
+    <div class="panel overflow-x-auto"><table class="w-full"><thead class="bg-stone-50"><tr><th>N°</th><th>Réservation</th><th>Client</th><th>Prestation</th><th>Horaire</th><th>Statut</th><th>Actions</th></tr></thead><tbody class="divide-y divide-stone-100">
+        @forelse($reservations as $reservation)<tr><td class="tabular-nums text-muted">{{ $reservations->firstItem() + $loop->index }}</td><td class="whitespace-nowrap font-medium">{{ $reservation->number }}</td><td><p class="font-semibold">{{ $reservation->customer_name }}</p><p class="mt-1 text-xs text-muted">{{ $reservation->phone }}</p></td><td>{{ $reservation->service_name_snapshot }}<p class="mt-1 text-xs text-muted">{{ $reservation->variant_name_snapshot }}</p></td><td class="whitespace-nowrap">{{ ($reservation->scheduled_at ?? $reservation->preferred_at)->format('d/m/Y H:i') }}<p class="mt-1 text-xs text-muted">{{ $reservation->scheduled_at ? 'Horaire retenu' : 'Horaire souhaité' }}</p></td><td><span class="{{ $reservation->status === 'confirmed' ? 'badge' : 'badge-muted' }} whitespace-nowrap">{{ $reservation->status_label }}</span></td><td><x-icon-action :href="route('reservations.show', $reservation)" :label="'Consulter la réservation '.$reservation->number"/></td></tr>
+        @empty<tr><td colspan="7"><x-empty-state title="Aucune réservation" description="Les demandes envoyées depuis le site public apparaîtront ici." icon="calendar"/></td></tr>@endforelse
+    </tbody></table></div><div class="mt-6">{{ $reservations->links() }}</div>
+</x-layout>

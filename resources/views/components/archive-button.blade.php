@@ -1,0 +1,2 @@
+@props(['action','label'=>'Archiver','iconOnly'=>false])
+<form method="POST" action="{{ $action }}" x-data @submit="if (!confirm('Archiver cette fiche ? Elle sera retirée des listes actives, mais conservée en base.')) $event.preventDefault()">@csrf @method('DELETE')<button type="submit" title="{{ $label }}" aria-label="{{ $label }}" class="{{ $iconOnly ? 'icon-action !text-rose-700 hover:!bg-rose-50' : 'text-xs font-medium text-rose-700 hover:underline' }}">@if($iconOnly)<x-icon name="archive"/>@else{{ $label }}@endif</button></form>

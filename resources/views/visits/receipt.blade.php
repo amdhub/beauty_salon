@@ -1,0 +1,3 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{{ $visit->receipt_number }} · {{ $visit->salon_name_snapshot }}</title>@vite(['resources/css/app.css','resources/js/app.js'])</head>
+<body class="print:bg-white"><main class="mx-auto max-w-3xl p-4 sm:p-8 print:max-w-none print:p-0"><div class="mb-6 flex flex-wrap justify-between gap-3 print:hidden"><a href="{{ route('visits.show',$visit) }}" class="btn-secondary">Retour à la vente</a><button type="button" onclick="window.print()" class="btn">Imprimer / Enregistrer en PDF</button></div><x-visit-receipt :visit="$visit"/></main></body></html>

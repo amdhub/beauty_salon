@@ -1,0 +1,9 @@
+<x-layout title="Rôle et permissions"><x-page-heading :title="$role->exists ? 'Modifier la fiche' : 'Nouvelle fiche'" description="Adaptez les responsabilités à l’organisation de votre salon."><a class="btn-secondary" href="{{ route('roles.index') }}">Retour à la liste</a></x-page-heading>
+<form method="POST" action="{{ $role->exists ? route('roles.update',$role) : route('roles.store') }}" enctype="multipart/form-data" class="panel max-w-4xl p-6 md:p-8">@csrf @if($role->exists) @method('PUT') @endif
+<div class="mb-7 border-b border-stone-100 pb-5"><h2 class="serif text-xl">Rôle et permissions</h2><p class="mt-1 text-xs text-muted">Les champs marqués d’un astérisque sont obligatoires.</p></div>
+<div class="grid gap-6 md:grid-cols-2">
+<x-field name="name" label="Nom du rôle" :value="$role->name" required/>
+<x-field name="slug" label="Identifiant technique unique" :value="$role->slug" required placeholder="assistant-salon"/>
+<fieldset class="md:col-span-2"><legend class="mb-3 text-sm font-medium">Permissions accordées</legend><div class="grid gap-3 sm:grid-cols-2">@foreach($permissions as $permission)<label class="flex items-center gap-3 rounded-xl border border-stone-200 p-4"><input type="checkbox" name="permissions[]" value="{{ $permission->id }}" @checked(in_array($permission->id,old('permissions',$role->exists?$role->permissions->modelKeys():[])))>{{ $permission->name }}</label>@endforeach</div><p class="mt-3 text-xs text-muted">Pour les clients, l’équipe et le catalogue, accordez aussi le droit de consultation aux personnes chargées de leur gestion.</p></fieldset>
+</div>
+<div class="mt-8 flex flex-wrap justify-end gap-3 border-t border-stone-100 pt-6"><a href="{{ route('roles.index') }}" class="btn-secondary">Annuler</a><button class="btn">Enregistrer</button></div></form></x-layout>
