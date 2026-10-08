@@ -18,6 +18,7 @@ class RolePermissionSeeder extends Seeder
             'inventory.view' => 'Consulter les stocks et mouvements', 'inventory.manage' => 'Gérer les produits et approvisionnements', 'inventory.consume' => 'Enregistrer les consommations',
             'reservations.view' => 'Consulter les réservations', 'reservations.manage' => 'Traiter les réservations',
             'settings.manage' => 'Gérer les paramètres du salon',
+            'staff_debts.view' => 'Consulter les dettes de l’équipe', 'staff_debts.manage' => 'Enregistrer les dettes et remboursements de l’équipe',
             'users.manage' => 'Gérer les comptes utilisateurs', 'roles.manage' => 'Gérer les rôles et permissions',
         ];
         foreach ($permissions as $slug => $name) {
@@ -25,7 +26,7 @@ class RolePermissionSeeder extends Seeder
         }
         $roles = [
             'administrator' => ['Administrateur', array_keys($permissions)],
-            'manager' => ['Responsable', ['customers.view', 'customers.manage', 'employees.view', 'employees.manage', 'catalog.view', 'catalog.manage', 'sales.view', 'sales.manage', 'inventory.view', 'inventory.manage', 'inventory.consume', 'reservations.view', 'reservations.manage', 'settings.manage']],
+            'manager' => ['Responsable', ['customers.view', 'customers.manage', 'employees.view', 'employees.manage', 'catalog.view', 'catalog.manage', 'sales.view', 'sales.manage', 'inventory.view', 'inventory.manage', 'inventory.consume', 'reservations.view', 'reservations.manage', 'settings.manage', 'staff_debts.view', 'staff_debts.manage']],
             'receptionist' => ['Réception / Caisse', ['customers.view', 'customers.manage', 'employees.view', 'catalog.view', 'sales.view', 'sales.manage', 'inventory.view', 'inventory.consume', 'reservations.view', 'reservations.manage']],
             'beautician' => ['Esthéticienne / Employé', ['catalog.view']],
         ];

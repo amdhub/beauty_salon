@@ -16,6 +16,7 @@
  ['products.index','Produits & stocks','layers','viewAny',\App\Models\ConsumableProduct::class],
  ['customers.index','Clients','users','viewAny',\App\Models\Customer::class],
  ['employees.index','Équipe','flower','viewAny',\App\Models\Employee::class],
+ ['staff-debts.index','Dettes de l’équipe','receipt','viewAny',\App\Models\StaffDebt::class],
  ['services.index','Prestations & tarifs','scissors','viewAny',\App\Models\Service::class],
  ['categories.index','Catégories','layers','viewAny',\App\Models\ServiceCategory::class],
  ['users.index','Utilisateurs','shield','viewAny',\App\Models\User::class],

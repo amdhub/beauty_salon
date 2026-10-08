@@ -14,6 +14,8 @@ use App\Http\Controllers\SalonVisitController;
 use App\Http\Controllers\ServiceCategoryController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceVariantController;
+use App\Http\Controllers\StaffDebtController;
+use App\Http\Controllers\StaffRepaymentController;
 use App\Http\Controllers\StockMovementController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitPaymentController;
@@ -45,6 +47,8 @@ Route::middleware('auth')->group(function (): void {
     Route::resource('products', ConsumableProductController::class)->except('destroy');
     Route::resource('customers', CustomerController::class);
     Route::resource('employees', EmployeeController::class)->except('show');
+    Route::resource('staff-debts', StaffDebtController::class)->parameters(['staff-debts' => 'debt'])->only(['index', 'create', 'store', 'show']);
+    Route::post('/staff-debts/{debt}/repayments', [StaffRepaymentController::class, 'store'])->name('staff-debts.repayments.store');
     Route::resource('categories', ServiceCategoryController::class)->except('show');
     Route::resource('services', ServiceController::class);
     Route::resource('services.variants', ServiceVariantController::class)->except(['index', 'show'])->scoped();
