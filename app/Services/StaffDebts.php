@@ -40,6 +40,7 @@ class StaffDebts
                 'employee_id' => $employee->id, 'employee_name_snapshot' => $employee->name,
                 'amount_minor' => $amount, 'repaid_minor' => 0, 'currency' => config('salon.currency'),
                 'issued_on' => $data['issued_on'], 'due_on' => $data['due_on'] ?? null,
+                'payment_method' => $data['payment_method'],
                 'reason' => $data['reason'], 'notes' => $data['notes'] ?? null,
                 'created_by' => $actor->id, 'actor_name_snapshot' => $actor->name, 'idempotency_key' => $data['idempotency_key'],
             ]);

@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentMethod;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['employee_id', 'employee_name_snapshot', 'amount_minor', 'repaid_minor', 'currency', 'issued_on', 'due_on', 'reason', 'notes', 'created_by', 'actor_name_snapshot', 'idempotency_key'])]
+#[Fillable(['employee_id', 'employee_name_snapshot', 'amount_minor', 'repaid_minor', 'currency', 'issued_on', 'due_on', 'reason', 'notes', 'created_by', 'actor_name_snapshot', 'idempotency_key', 'payment_method'])]
 class StaffDebt extends Model
 {
     use HasFactory;
 
     protected function casts(): array
     {
-        return ['amount_minor' => 'integer', 'repaid_minor' => 'integer', 'issued_on' => 'date', 'due_on' => 'date'];
+        return ['amount_minor' => 'integer', 'repaid_minor' => 'integer', 'issued_on' => 'date', 'due_on' => 'date', 'payment_method' => PaymentMethod::class];
     }
 
     public function employee(): BelongsTo

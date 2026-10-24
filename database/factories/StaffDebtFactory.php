@@ -14,6 +14,7 @@ class StaffDebtFactory extends Factory
         return [
             'employee_id' => Employee::factory(), 'employee_name_snapshot' => 'Membre test',
             'amount_minor' => 10000, 'repaid_minor' => 0, 'currency' => 'USD',
+            'payment_method' => 'cash',
             'issued_on' => today()->subDay(), 'due_on' => null, 'reason' => 'Avance',
             'created_by' => User::factory(), 'actor_name_snapshot' => 'Responsable', 'idempotency_key' => (string) Str::uuid(),
         ];

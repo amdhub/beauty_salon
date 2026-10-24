@@ -1,0 +1,18 @@
+<x-layout title="Dépenses">
+    <x-page-heading title="Les dépenses du salon" description="Retrouvez les règlements, leurs motifs et leurs bénéficiaires.">
+        @can('view', \App\Services\FinancialReport::class)<a href="{{ route('financial-reports.index') }}" class="btn-secondary">Rapports financiers</a>@endcan
+        @can('create', \App\Models\Expense::class)<a href="{{ route('expenses.create') }}" class="btn"><x-icon name="plus"/>Enregistrer une dépense</a>@endcan
+    </x-page-heading>
+    <form method="GET" class="panel mb-6 grid items-end gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3">
+        <x-field name="from" label="Du" type="date" :value="$filters['from'] ?? ''"/><x-field name="to" label="Au" type="date" :value="$filters['to'] ?? ''"/>
+        <div class="field"><label for="category">Catégorie</label><select id="category" name="category"><option value="">Toutes les catégories</option>@foreach(\App\Models\Expense::CATEGORIES as $key => $label)<option value="{{ $key }}" @selected(($filters['category'] ?? '') === $key)>{{ $label }}</option>@endforeach</select></div>
+        <div class="field"><label for="payment_method">Mode de paiement</label><select id="payment_method" name="payment_method"><option value="">Tous les modes</option>@foreach(\App\Enums\PaymentMethod::cases() as $method)<option value="{{ $method->value }}" @selected(($filters['payment_method'] ?? '') === $method->value)>{{ $method->label() }}</option>@endforeach</select></div>
+        <x-field name="search" label="Libellé, bénéficiaire ou référence" :value="$filters['search'] ?? ''" maxlength="150"/>
+        <div class="flex flex-wrap gap-2"><button class="btn">Filtrer</button><a href="{{ route('expenses.index') }}" class="btn-secondary" aria-label="Effacer les filtres"><x-icon name="close"/></a></div>
+    </form>
+    @if($totals->isNotEmpty())<div class="mb-6 flex flex-wrap gap-4">@foreach($totals as $total)<div class="panel p-5"><p class="eyebrow">Dépenses de la sélection</p><p class="mt-2 text-2xl font-semibold text-wine">{{ \App\Services\Money::decimal((int) $total->total_minor) }} {{ $total->currency }}</p></div>@endforeach</div>@endif
+    <div class="panel overflow-hidden"><div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-stone-50"><tr><th scope="col">N°</th><th scope="col">Date / Référence</th><th scope="col">Dépense</th><th scope="col">Bénéficiaire</th><th scope="col">Montant</th><th scope="col">Mode</th><th scope="col">Actions</th></tr></thead><tbody class="divide-y divide-stone-100">
+        @forelse($expenses as $expense)<tr><td class="tabular-nums text-muted">{{ $expenses->firstItem() + $loop->index }}</td><td class="whitespace-nowrap">{{ $expense->paid_on->format('d/m/Y') }}<p class="mt-1 text-xs text-muted">{{ $expense->number }}</p></td><td class="min-w-48 max-w-sm break-words"><p class="font-semibold">{{ $expense->label }}</p><p class="mt-1 text-xs text-muted">{{ $expense->category_label }}</p></td><td class="max-w-xs break-words">{{ $expense->payee ?: 'Non renseigné' }}</td><td class="whitespace-nowrap font-semibold">{{ \App\Services\Money::decimal($expense->amount_minor) }} {{ $expense->currency }}</td><td>{{ $expense->payment_method->label() }}</td><td><x-icon-action :href="route('expenses.show', $expense)" :label="'Consulter la dépense '.$expense->number"/></td></tr>
+        @empty<tr><td colspan="7"><x-empty-state title="Aucune dépense trouvée" description="Enregistrez un règlement ou adaptez les filtres." icon="stock-out"/></td></tr>@endforelse
+    </tbody></table></div></div><div class="mt-6">{{ $expenses->links() }}</div>
+</x-layout>

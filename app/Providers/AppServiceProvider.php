@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Policies\FinancialReportPolicy;
+use App\Services\FinancialReport;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Gate::policy(FinancialReport::class, FinancialReportPolicy::class);
         Model::preventLazyLoading(! app()->isProduction());
         RateLimiter::for('bookings', fn (Request $request) => [
             Limit::perMinute(5)->by('minute:'.$request->ip()),

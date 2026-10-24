@@ -32,6 +32,7 @@ class StaffDebtsTest extends TestCase
     {
         return [...[
             'employee_id' => $employee->id, 'amount' => '100.50', 'issued_on' => today()->format('Y-m-d'),
+            'payment_method' => 'cash',
             'due_on' => today()->addMonth()->format('Y-m-d'), 'reason' => 'Avance personnelle', 'idempotency_key' => (string) Str::uuid(),
         ], ...$overrides];
     }

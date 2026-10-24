@@ -12,6 +12,8 @@
  ['dashboard','Vue d’ensemble','grid',null,null],
  ['pos.index','Caisse / POS','cart','create',\App\Models\SalonVisit::class],
  ['visits.index','Ventes & reçus','receipt','viewAny',\App\Models\SalonVisit::class],
+ ['expenses.index','Dépenses','stock-out','viewAny',\App\Models\Expense::class],
+ ['financial-reports.index','Rapports financiers','grid','view',\App\Services\FinancialReport::class],
  ['reservations.index','Réservations','calendar','viewAny',\App\Models\Reservation::class],
  ['products.index','Produits & stocks','layers','viewAny',\App\Models\ConsumableProduct::class],
  ['customers.index','Clients','users','viewAny',\App\Models\Customer::class],

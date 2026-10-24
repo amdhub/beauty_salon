@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PaymentMethod;
 use App\Http\Requests\StoreStaffDebtRequest;
 use App\Models\Employee;
 use App\Models\StaffDebt;
 use App\Services\StaffDebts;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class StaffDebtController extends Controller
@@ -65,5 +68,20 @@ class StaffDebtController extends Controller
             'debt' => $debt, 'repayments' => $debt->repayments()->orderByDesc('paid_on')->orderByDesc('id')->paginate(15),
             'repaymentKey' => (string) Str::uuid(),
         ]);
+    }
+
+    public function updatePaymentMethod(Request $request, StaffDebt $debt): RedirectResponse
+    {
+        Gate::authorize('repay', $debt);
+        $data = $request->validate(['payment_method' => ['required', Rule::enum(PaymentMethod::class)]]);
+        DB::transaction(function () use ($debt, $data): void {
+            $debt = StaffDebt::whereKey($debt->id)->lockForUpdate()->firstOrFail();
+            if ($debt->payment_method !== null) {
+                throw ValidationException::withMessages(['payment_method' => 'Le mode de versement de cette dette est déjà renseigné.']);
+            }
+            $debt->update($data);
+        }, 3);
+
+        return redirect()->route('staff-debts.show', $debt)->with('success', 'Le mode de versement est renseigné dans le rapport financier.');
     }
 }

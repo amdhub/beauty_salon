@@ -5,6 +5,7 @@
             @csrf<input type="hidden" name="idempotency_key" value="{{ old('idempotency_key', $submissionKey) }}">
             <div class="field"><label for="employee_id">Membre de l’équipe *</label><select id="employee_id" name="employee_id" required><option value="">Choisir un membre</option>@foreach($employees as $employee)<option value="{{ $employee->id }}" @selected(old('employee_id', $selectedEmployee) == $employee->id)>{{ $employee->name }}</option>@endforeach</select></div>
             <x-field name="amount" :label="'Montant accordé ('.config('salon.currency').')'" type="number" min="0.01" max="9999999999.99" step="0.01" required/>
+            <div class="field"><label for="payment_method">Mode de versement *</label><select id="payment_method" name="payment_method" required>@foreach(\App\Enums\PaymentMethod::cases() as $method)<option value="{{ $method->value }}" @selected(old('payment_method') === $method->value)>{{ $method->label() }}</option>@endforeach</select></div>
             <div class="grid gap-5 sm:grid-cols-2"><x-field name="issued_on" label="Date de la dette" type="date" :value="today()->format('Y-m-d')" :max="today()->format('Y-m-d')" required/><x-field name="due_on" label="Échéance (facultatif)" type="date"/></div>
             <x-field name="reason" label="Motif" placeholder="Avance sur salaire, prêt personnel…" maxlength="255" required/>
             <x-field name="notes" label="Notes (facultatif)" type="textarea" maxlength="3000"/>

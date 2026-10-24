@@ -6,6 +6,12 @@
                 <div class="flex flex-wrap items-center justify-between gap-3"><h2 class="serif text-2xl">{{ $debt->employee_name_snapshot }}</h2><span class="{{ $debt->balance_minor === 0 ? 'badge' : 'badge-muted' }}">{{ $debt->status_label }}</span></div>
                 @if($debt->employee->trashed())<p class="mt-3 text-xs text-muted">Ce membre est archivé. Le suivi des remboursements reste disponible.</p>@endif
                 <p class="mt-5 break-words font-semibold">{{ $debt->reason }}</p>
+                <p class="mt-3 text-sm text-muted">Mode de versement : {{ $debt->payment_method?->label() ?? 'Non renseigné' }}</p>
+                @if($debt->payment_method === null)
+                    @can('repay', $debt)
+                        <form method="POST" action="{{ route('staff-debts.payment-method.update', $debt) }}" class="mt-4 flex flex-wrap items-end gap-3">@csrf @method('PATCH')<div class="field"><label for="loan_payment_method">Compléter le mode de versement initial</label><select id="loan_payment_method" name="payment_method" required><option value="">Choisir le mode utilisé</option>@foreach(\App\Enums\PaymentMethod::cases() as $method)<option value="{{ $method->value }}">{{ $method->label() }}</option>@endforeach</select></div><button class="btn-secondary">Enregistrer</button></form>
+                    @endcan
+                @endif
                 <dl class="mt-6 grid gap-5 sm:grid-cols-3"><div><dt class="eyebrow">Montant initial</dt><dd class="mt-2 break-words font-semibold">{{ \App\Services\Money::decimal($debt->amount_minor) }} {{ $debt->currency }}</dd></div><div><dt class="eyebrow">Remboursé</dt><dd class="mt-2 break-words font-semibold">{{ \App\Services\Money::decimal($debt->repaid_minor) }} {{ $debt->currency }}</dd></div><div><dt class="eyebrow">Solde restant</dt><dd class="mt-2 break-words font-semibold text-wine">{{ \App\Services\Money::decimal($debt->balance_minor) }} {{ $debt->currency }}</dd></div></dl>
                 <div class="mt-6 flex flex-wrap gap-x-8 gap-y-3 border-t border-stone-100 pt-5 text-sm text-muted"><p>Date : {{ $debt->issued_on->format('d/m/Y') }}</p><p>Échéance : {{ $debt->due_on?->format('d/m/Y') ?? 'Non définie' }}</p></div>
                 @if($debt->notes)<p class="mt-5 whitespace-pre-line break-words text-sm text-muted">{{ $debt->notes }}</p>@endif

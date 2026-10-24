@@ -5,6 +5,8 @@ use App\Http\Controllers\ConsumableProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\FinancialReportController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\PublicBookingController;
 use App\Http\Controllers\ReservationController;
@@ -32,6 +34,8 @@ Route::middleware('guest')->group(function (): void {
 Route::middleware('auth')->group(function (): void {
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/rapports-financiers', [FinancialReportController::class, 'index'])->name('financial-reports.index');
+    Route::resource('expenses', ExpenseController::class)->only(['index', 'create', 'store', 'show']);
     Route::get('/parametres', [SalonSettingController::class, 'edit'])->name('settings.edit');
     Route::put('/parametres', [SalonSettingController::class, 'update'])->name('settings.update');
     Route::view('/pos', 'pos.index')->middleware('can:create,App\Models\SalonVisit')->name('pos.index');
@@ -49,6 +53,7 @@ Route::middleware('auth')->group(function (): void {
     Route::resource('employees', EmployeeController::class)->except('show');
     Route::resource('staff-debts', StaffDebtController::class)->parameters(['staff-debts' => 'debt'])->only(['index', 'create', 'store', 'show']);
     Route::post('/staff-debts/{debt}/repayments', [StaffRepaymentController::class, 'store'])->name('staff-debts.repayments.store');
+    Route::patch('/staff-debts/{debt}/payment-method', [StaffDebtController::class, 'updatePaymentMethod'])->name('staff-debts.payment-method.update');
     Route::resource('categories', ServiceCategoryController::class)->except('show');
     Route::resource('services', ServiceController::class);
     Route::resource('services.variants', ServiceVariantController::class)->except(['index', 'show'])->scoped();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\PaymentMethod;
 use App\Models\StaffDebt;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -21,6 +22,7 @@ class StoreStaffDebtRequest extends FormRequest
             'issued_on' => ['required', 'date_format:Y-m-d', 'before_or_equal:today'],
             'due_on' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:issued_on'],
             'reason' => ['required', 'string', 'max:255'],
+            'payment_method' => ['required', Rule::enum(PaymentMethod::class)],
             'notes' => ['nullable', 'string', 'max:3000'],
             'idempotency_key' => ['required', 'uuid'],
         ];
